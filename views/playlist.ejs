@@ -24,11 +24,11 @@
           <a href="/" class="home">
             <img src="/images/home.png" alt="" />
             <div class="text">Home</div>
-          </a>
+          </a href="/">
           <a href="/getSearch" class="search">
             <img src="/images/loupe.png" alt="" />
             <div class="text">Search</div>
-          </a>
+          </a href="/getSearch">
         </div>
         <div class="library">
           <div class="title">
@@ -39,16 +39,17 @@
             <button class="add"><img src="/images/plus.png" alt="" /></button>
           </div>
           <div class="list">
-            <% for(let i=0;i<playlist.length;i++){ %>
-            <a href="/playlist?q=<%= playlist[i] %>" class="element <%= playlist[i] %>.replace(/\s/g, '')">
-              <div class="poster">
-                <img src="<%= poster[i] %>" alt="">
-              </div>
-              <div class="info">
-                <h4 class="name playlistName"><%= playlist[i] %></h4>
-                <h5 class="name text">Playlist <div class="dot"></div> <%= current_username %></h5>
-              </div>
-            </a>
+            <% for(let i=0;i<playlist.length;i++){
+                let playlistName=playlist[i].replace(/\s/g,'')%>
+                <a href="/playlist?q=<%= playlist[i] %>" class='element <%= playlistName %>'>
+                  <div class="poster">
+                    <img src="<%= poster[i] %>" alt="">
+                  </div>
+                  <div class="info">
+                    <h4 class="name playlistName"><%= playlist[i] %></h4>
+                    <h5 class="name text">Playlist <div class="dot"></div> <%= current_username %></h5>
+                  </div>
+                </a>
             <% } %>
             <a href="/playlist?q=Liked Songs" class="element LikedSongs">
               <div class="poster">
@@ -70,26 +71,41 @@
           </div>
           <div class="profile"><img src="/images/profile.jpg" alt=""></div>
         </div>
-        <h4 class="greetings"><%= greetings %></h4>
-        <div class="playlists">
-          <% for(let i=0;i<playlist.length;i++){
-            let name;
-            name=playlist[i].replace(/\s/g, '');%>
-            <a href="/playlist?q=<%= playlist[i] %>" class='element <%= name %>'><!--adding name of the playlist as class after removing the blank spaces so that we can easily compare in script while retaining the previous class (element)-->
-              <div class="poster">
-                <img src="<%= poster[i] %>" alt="">
-              </div>
-              <div class="info">
-                <h4 class="name playlistName"><%= playlist[i] %></h4>
-              </div>
-              <div class="playpausebtn"><img src="/images/play-button.png" alt=""></div>
-            </a>
-          <% } %>
+        <div class="mainScreen">
+            <div class="playlistInfo">
+                <% if(currentPlaylistPoster){%>
+                    <img src="<%= currentPlaylistPoster %>" alt="">
+                <%}
+                else{%>
+                    <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
+                <%}%>
+                <div class="textInfo">
+                    <h5>Playlist</h5>
+                    <h1><%= currentPlaylistName %></h1>
+                    <div class="details">
+                        <div class="profilePic"><img src="/images/profile.jpg" alt=""></div>
+                        <h5><%= current_username %></h5>
+                        <div class="dot"></div>
+                        <% if(currentPlaylistName!='Liked Songs'){%>
+                            <h5><%= numberOfSongs %> song(s)</h5>
+                        <%}
+                        else{%>
+                            <h5><%= likedSongsCount %> song(s)</h5>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+            <div class="songs"></div>
         </div>
       </div>
       <div class="sec sec3"></div>
       <div class="sec sec4"></div>
     </div>
     <script src="/scripts/script.js"></script>
+    <script>
+        let currentPlaylistName=('<%= currentPlaylistName %>').replace(/\s/g, '')
+        console.log(currentPlaylistName);
+        $(`.sec1 .library .list .${currentPlaylistName}`).css('background-color','#353535');
+    </script>
   </body>
 </html>

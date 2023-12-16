@@ -40,7 +40,7 @@
           </div>
           <div class="list">
             <% for(let i=0;i<playlist.length;i++){ %>
-            <div class="element">
+            <a href="/playlist?q=<%= playlist[i] %>" class="element <%= playlist[i] %>.replace(/\s/g, '')">
               <div class="poster">
                 <img src="<%= poster[i] %>" alt="">
               </div>
@@ -48,9 +48,9 @@
                 <h4 class="name playlistName"><%= playlist[i] %></h4>
                 <h5 class="name text">Playlist <div class="dot"></div> <%= current_username %></h5>
               </div>
-            </div>
+            </a>
             <% } %>
-            <div class="element">
+            <a href="/playlist?q=Liked Songs" class="element LikedSongs">
               <div class="poster">
                 <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
               </div>
@@ -58,7 +58,7 @@
                 <h4 class="name playlistName">Liked Songs</h4>
                 <h5 class="name text">Playlist <div class="dot"></div> <%= likedSongsCount %> Songs</h5>
               </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ function goForwards() {
     $(".sec2 > .nav .forward").css("cursor","not-allowed");
   }
 }
+
 if ($(".greetings").text()) {
   $(".home>img").attr("src", "/images/homeActive.png");
   $(".home").css("opacity", "1");
@@ -47,6 +48,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
+    // $(".sec2 .mainScreen .playlistInfo .textInfo").css('padding','0');
   } else {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
@@ -60,6 +62,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
+    // $(".sec2 .mainScreen .playlistInfo .textInfo").css('padding','0');
   }
   count++;
 });

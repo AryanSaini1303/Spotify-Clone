@@ -92,6 +92,7 @@ app.get("/", async (req, res) => {
   //   current_username,
   //   greetings,
   // });
+  // console.log(playlist);
   res.render("index", {
     playlist: playlist,
     poster: poster,
@@ -118,9 +119,33 @@ app.get('/search',async(req,res)=>{
     let loopRange=results.length;
     res.json({results,loopRange});
   } catch (error) {
-     console.log(error);
+    console.log(error);
   }
 });
+app.get('/playlist',async(req,res)=>{
+  let currentPoster;
+  const query=(req.query.q);
+  const result=await db.query('select * from user_songs where playlist=$1',[query]);
+  // console.log(result.rows);
+  // console.log(query);
+  if(query=="Liked Songs"){
+    currentPoster="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg";
+  }
+  else{
+    currentPoster=result.rows[0].song_poster;
+  }
+  // console.log(result.rows.length);
+  res.render('playlist',{
+    playlist: playlist,
+    poster: poster,
+    likedSongsCount,
+    current_username,
+    greetings,
+    currentPlaylistName:query,
+    currentPlaylistPoster:currentPoster,
+    numberOfSongs:result.rows.length,
+  })
+})
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

@@ -146,6 +146,8 @@ body {
   transition: 0.3s background-color;
   cursor: pointer;
   margin: 0 0.5rem;
+  color:white;
+  text-decoration: none;
 }
 .list > .element:hover {
   background-color: rgba(128, 128, 128, 0.129);
@@ -262,6 +264,8 @@ body {
   grid-gap: 10px;
   overflow: hidden;
   position: relative;
+  color: white;
+  text-decoration: none;
 }
 .sec2 .playlists .element:hover {
   background-color: #59585a;
@@ -463,4 +467,37 @@ body {
   transition: 0.3s opacity;
   /* filter: drop-shadow(0.3rem 0.3rem 0.3rem black); */
   filter: invert(100);
+}
+.sec2 .mainScreen .playlistInfo img{
+  height: 15rem;
+  width: 15rem;
+  border-radius: 5px;
+}
+.sec2 .mainScreen .playlistInfo{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  margin:2rem 0;
+}
+.sec2 .mainScreen .playlistInfo .textInfo .details{
+  display:flex;
+  align-items: center;
+  gap:5px;
+}
+.sec2 .mainScreen .playlistInfo .textInfo .details .dot{
+  height: 4px;
+  width: 4px;
+  border-radius: 50%;
+  background-color: white;
+  opacity: 0.6;
+  margin-top: 8px;
+}
+.sec2 .mainScreen .playlistInfo .textInfo .details .profilePic>*{
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+}
+.sec2 .mainScreen .playlistInfo .textInfo{
+  font-family: "Kanit", sans-serif;
 }
