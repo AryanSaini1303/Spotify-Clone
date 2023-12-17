@@ -4,9 +4,8 @@ function goBackwards() {
 function goForwards() {
   if (window.history.forward() != null) {
     window.history.forward();
-  }
-  else{ 
-    $(".sec2 > .nav .forward").css("cursor","not-allowed");
+  } else {
+    $(".sec2 > .nav .forward").css("cursor", "not-allowed");
   }
 }
 
@@ -48,7 +47,10 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
-    $(".sec2 .mainScreen .playlistInfo .textInfo").css("margin-left","-3.5rem")
+    $(".sec2 .mainScreen .playlistInfo .textInfo").css(
+      "margin-left",
+      "-3.5rem"
+    );
   } else {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
@@ -62,7 +64,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
-    $(".sec2 .mainScreen .playlistInfo .textInfo").css("margin-left","0")
+    $(".sec2 .mainScreen .playlistInfo .textInfo").css("margin-left", "0");
   }
   count++;
 });
@@ -85,7 +87,7 @@ function search() {
   // console.log(searchInput);
 
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/search?q=" + encodeURIComponent(searchInput), true);
+  xhr.open("GET", "/search?q=" + encodeURIComponent(searchInput), true); //sending the searching query dynamically as the user types and fetching the result i.e. the matching songs
 
   xhr.onload = function () {
     if (xhr.status === 200) {
