@@ -48,7 +48,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
-    // $(".sec2 .mainScreen .playlistInfo .textInfo").css('padding','0');
+    $(".sec2 .mainScreen .playlistInfo .textInfo").css("margin-left","-3.5rem")
   } else {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
@@ -62,7 +62,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
-    // $(".sec2 .mainScreen .playlistInfo .textInfo").css('padding','0');
+    $(".sec2 .mainScreen .playlistInfo .textInfo").css("margin-left","0")
   }
   count++;
 });

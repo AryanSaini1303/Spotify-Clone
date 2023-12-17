@@ -477,6 +477,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 2fr;
   margin:2rem 0;
+  grid-gap: 0;
 }
 .sec2 .mainScreen .playlistInfo .textInfo .details{
   display:flex;
