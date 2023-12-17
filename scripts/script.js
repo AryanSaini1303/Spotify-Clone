@@ -44,7 +44,7 @@ $(".title>div").click(() => {
     $(".sec1 .element .info").css("display", "none");
     $(".nav>*").css("padding", "0 1.7rem");
     $(".sec2>.nav .forward").css("padding", "0");
-    $(".sec2>.nav *").css("padding", "0"); //when colums expands then it adds extra padding to the elements which the elements to expand too\
+    $(".sec2>.nav *").css("padding", "0"); //when colums expands then it adds extra padding to the elements which the elements to expand too
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
@@ -58,7 +58,7 @@ $(".title>div").click(() => {
     $(".sec1 .element .info").css("display", "block");
     $(".nav>*").css("padding", "0 1rem");
     $(".sec2>.nav .forward").css("padding", "0");
-    $(".sec2>.nav *").css("padding", "0"); //when colums expands then it adds extra padding to the elements which the elements to expand too\
+    $(".sec2>.nav *").css("padding", "0"); //when colums expands then it adds extra padding to the elements which the elements to expand too
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
