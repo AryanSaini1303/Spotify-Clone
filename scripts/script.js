@@ -14,7 +14,7 @@ if ($(".greetings").text()) {
   $(".home").css("opacity", "1");
   $(".search").css("opacity", "0.6");
   $(".search>img").attr("src", "/images/loupe.png");
-} else {
+} else if($(".topResults").text()) {
   $(".home").css("opacity", "0.6");
   $(".search").css("opacity", "1");
   $(".home>img").attr("src", "/images/home.png");
