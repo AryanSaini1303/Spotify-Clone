@@ -47,6 +47,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
   } else {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
@@ -60,6 +61,7 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
   }
   count++;
 });
@@ -192,5 +194,6 @@ if ($(".flag").text() == "true") {
   $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
   $(".sec2 #searchInput").css("padding", "10px");
   $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
+  $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
   count++;
 }
