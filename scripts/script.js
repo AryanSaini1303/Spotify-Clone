@@ -14,7 +14,7 @@ if ($(".greetings").text()) {
   $(".home").css("opacity", "1");
   $(".search").css("opacity", "0.6");
   $(".search>img").attr("src", "/images/loupe.png");
-} else if($(".topResults").text()) {
+} else if ($(".topResults").text()) {
   $(".home").css("opacity", "0.6");
   $(".search").css("opacity", "1");
   $(".home>img").attr("src", "/images/home.png");
@@ -47,10 +47,6 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
-    $(".sec2 .mainScreen .playlistInfo .textInfo").css(
-      "margin-left",
-      "-3.5rem"
-    );
   } else {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
@@ -64,7 +60,6 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
-    $(".sec2 .mainScreen .playlistInfo .textInfo").css("margin-left", "0");
   }
   count++;
 });
@@ -169,4 +164,33 @@ function search() {
 
   xhr.send();
   console.log(song_name);
+}
+$(".sec1 .title div").click(() => {
+  var variableValue = true;
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/collapse", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      console.log(xhr.responseText);
+    }
+  };
+  var data = JSON.stringify({ variable: variableValue });
+  xhr.send(data);
+});
+console.log($(".flag").text());
+if ($(".flag").text() == "true") {
+  $(".nav .text").css("display", "none");
+  $(".add").css("display", "none");
+  $(".title>div h4").css("display", "none");
+  $(".wrapper").css("grid-template-columns", "0.1fr 3fr 1.2fr");
+  $(".library .title").css("padding", "1.2rem 0");
+  $(".sec1 .element .info").css("display", "none");
+  $(".nav>*").css("padding", "0 1.7rem");
+  $(".sec2>.nav .forward").css("padding", "0");
+  $(".sec2>.nav *").css("padding", "0"); //when colums expands then it adds extra padding to the elements which the elements to expand too
+  $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
+  $(".sec2 #searchInput").css("padding", "10px");
+  $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
+  count++;
 }

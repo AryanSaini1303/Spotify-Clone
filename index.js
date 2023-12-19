@@ -11,6 +11,8 @@ const db = new pg.Client({
 });
 db.connect();
 
+var flag=false;
+var flagCount=0;
 var current_user = 1;
 const app = express();
 const port = 3000;
@@ -28,6 +30,7 @@ app.use(
     },
   })
 );
+app.use(bodyParser.json());// necessary to configure server to receive variables from xml requests
 app.set("view engine", "ejs");
 app.use(express.static("static"));
 app.use(
@@ -99,6 +102,7 @@ app.get("/", async (req, res) => {
     likedSongsCount,
     current_username,
     greetings,
+    flag,
   });
 });
 app.get('/getSearch',(req,res)=>{
@@ -106,7 +110,9 @@ app.get('/getSearch',(req,res)=>{
     poster: poster,
     likedSongsCount,
     current_username,
-    greetings,});
+    greetings,
+    flag,
+  });
 })
 app.get('/search',async(req,res)=>{
   const query=(req.query.q).replace(/\b\w/g, match => match.toUpperCase());
@@ -144,7 +150,20 @@ app.get('/playlist',async(req,res)=>{
     currentPlaylistName:query,
     currentPlaylistPoster:currentPoster,
     numberOfSongs:result.rows.length,
+    flag,
   })
+})
+
+app.post('/collapse',(req,res)=>{
+  flagCount++;
+  if(flagCount%2){
+    flag=req.body.variable;
+  }
+  else{
+    flag=false;
+  }
+  // console.log(flag);
+  // res.send("flag set successfully");
 })
 
 app.listen(port, () => {

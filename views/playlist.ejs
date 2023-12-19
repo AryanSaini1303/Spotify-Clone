@@ -72,39 +72,43 @@
           <div class="profile"><img src="/images/profile.jpg" alt=""></div>
         </div>
         <div class="mainScreen">
-            <div class="playlistInfo">
-                <% if(currentPlaylistPoster){%>
-                    <img src="<%= currentPlaylistPoster %>" alt="">
-                <%}
-                else{%>
-                    <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
-                <%}%>
-                <div class="textInfo">
-                    <h5>Playlist</h5>
-                    <h1><%= currentPlaylistName %></h1>
-                    <div class="details">
-                        <div class="profilePic"><img src="/images/profile.jpg" alt=""></div>
-                        <h5><%= current_username %></h5>
-                        <div class="dot"></div>
-                        <% if(currentPlaylistName!='Liked Songs'){%>
-                            <h5><%= numberOfSongs %> song(s)</h5>
-                        <%}
-                        else{%>
-                            <h5><%= likedSongsCount %> song(s)</h5>
-                        <%}%>
-                    </div>
-                </div>
-            </div>
+          <div class="playlistInfo">
+              <% if(currentPlaylistPoster){%>
+                  <img src="<%= currentPlaylistPoster %>" alt="">
+              <%}
+              else{%>
+                  <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
+              <%}%>
+              <div class="textInfo">
+                  <h4>Playlist</h4>
+                  <h1><%= currentPlaylistName %></h1>
+                  <div class="details">
+                      <div class="profilePic"><img src="/images/profile.jpg" alt=""></div>
+                      <h4 class="username"><%= current_username %></h4>
+                      <div class="dot"></div>
+                      <% if(currentPlaylistName!='Liked Songs'){%>
+                          <h4><%= numberOfSongs %> song(s)</h4>
+                      <%}
+                      else{%>
+                          <h4><%= likedSongsCount %> song(s)</h4>
+                      <%}%>
+                  </div>
+              </div>
+          </div>
+          <div class="songSection">
+            <div class="nav"></div>
             <div class="songs"></div>
+          </div>
         </div>
       </div>
+      <div class="flag" style="display:none"><%= flag %></div>
       <div class="sec sec3"></div>
       <div class="sec sec4"></div>
     </div>
     <script src="/scripts/script.js"></script>
     <script>
         let currentPlaylistName=('<%= currentPlaylistName %>').replace(/\s/g, '')
-        console.log(currentPlaylistName);
+        /*console.log(currentPlaylistName);*/
         $(`.sec1 .library .list .${currentPlaylistName}`).css('background-color','#353535');
     </script>
   </body>
