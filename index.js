@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
+import mp3Duration from "mp3-duration";
 
 const db = new pg.Client({
   user: "postgres",
@@ -11,8 +12,8 @@ const db = new pg.Client({
 });
 db.connect();
 
-var flag=false;
-var flagCount=0;
+var flag = false;
+var flagCount = 0;
 var current_user = 1;
 const app = express();
 const port = 3000;
@@ -30,7 +31,7 @@ app.use(
     },
   })
 );
-app.use(bodyParser.json());// necessary to configure server to receive variables from xml requests
+app.use(bodyParser.json()); // necessary to configure server to receive variables from xml requests
 app.set("view engine", "ejs");
 app.use(express.static("static"));
 app.use(
@@ -105,71 +106,118 @@ app.get("/", async (req, res) => {
     flag,
   });
 });
-app.get('/getSearch',(req,res)=>{
-  res.render('search',{playlist: playlist,
+app.get("/getSearch", (req, res) => {
+  res.render("search", {
+    playlist: playlist,
     poster: poster,
     likedSongsCount,
     current_username,
     greetings,
     flag,
   });
-})
-app.get('/search',async(req,res)=>{
-  const query=(req.query.q).replace(/\b\w/g, match => match.toUpperCase());
+});
+app.get("/search", async (req, res) => {
+  const query = req.query.q.replace(/\b\w/g, (match) => match.toUpperCase());
   // console.log(query)
   try {
-    let results=await db.query('SELECT song_name, artist_name, song_poster FROM all_songs WHERE LOWER(song_name) LIKE $1',
-    [`%${query.toLowerCase()}%`]);
+    let results = await db.query(
+      "SELECT song_name, artist_name, song_poster FROM all_songs WHERE LOWER(song_name) LIKE $1",
+      [`%${query.toLowerCase()}%`]
+    );
     // console.log(results.rows);
-    results=results.rows;
-    let loopRange=results.length;
-    res.json({results,loopRange});
+    results = results.rows;
+    let loopRange = results.length;
+    res.json({ results, loopRange });
   } catch (error) {
     console.log(error);
   }
 });
-app.get('/playlist',async(req,res)=>{
+app.get("/playlist", async (req, res) => {
   let currentPoster;
-  const query=(req.query.q);
-  const response=await db.query('select * from user_songs where playlist=$1',[query]);
-  const result=response.rows;
-  const altresponse=await db.query('select * from user_songs where liked=1');
-  const altresult=altresponse.rows;
+  const query = req.query.q;
+  console.log(query);
+  const response = await db.query(
+    "select * from user_songs where playlist=$1",
+    [query]
+  );
+  const result = response.rows;
+  const altresponse = await db.query("select * from user_songs where liked=1");
+  const altresult = altresponse.rows;
   // console.log("result",result);
   // console.log("altresult",altresult);
   // console.log(query);
-  if(query=="Liked Songs"){
-    currentPoster="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg";
-  }
-  else{
-    currentPoster=result[0].song_poster;
+  if (query == "Liked Songs") {
+    currentPoster =
+    "https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg";
+  } else {
+    currentPoster = result[0].song_poster;
   }
   // console.log(result.rows.length);
-  res.render('playlist',{
-    playlist: playlist,
-    poster: poster,
-    likedSongsCount,
-    current_username,
-    greetings,
-    currentPlaylistName:query,
-    currentPlaylistPoster:currentPoster,
-    numberOfSongs:result.length,
-    flag,
-    result,
-    altresult,
-  })
-})
-
-app.post('/collapse',(req,res)=>{
-  flagCount++;
-  if(flagCount%2){
-    flag=req.body.variable;
+  /******************************************************************************************* */
+  let Durations=[];
+  let array=result;
+  if(result==""){
+    array=altresult;
   }
-  else{
-    flag=false;
+  const promises = array.map((element) => {
+    return new Promise((resolve, reject) => {
+      mp3Duration(
+        "./static" + element.song_path + ".mp3",
+        function (err, duration) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(duration);
+          }
+        }
+      );
+    });
+  });
+  
+  Promise.all(promises)
+    .then((durations) => {
+      // console.log(durations);
+      Durations.push(durations);
+      // console.log(Durations);
+      res.render("playlist", {
+        playlist: playlist,
+        poster: poster,
+        likedSongsCount,
+        current_username,
+        greetings,
+        currentPlaylistName: query,
+        currentPlaylistPoster: currentPoster,
+        numberOfSongs: result.length,
+        flag,
+        result,
+        altresult,
+        Durations,
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+  /******************************************************************************************* */
+});
+
+app.post("/collapse", (req, res) => {
+  flagCount++;
+  if (flagCount % 2) {
+    flag = req.body.variable;
+  } else {
+    flag = false;
   }
   // console.log(flag);
   // res.send("flag set successfully");
+});
+
+app.post("/play",async (req,res)=>{
+  const query=req.body.variableName;
+  // console.log(query);
+  const response=await db.query('select song_path from user_songs where user_id=$1 and song_id=$2',[current_user,query]);
+  const result=response.rows;
+  // console.log(result);
+  res.json(result[0].song_path);
 })
 
 app.listen(port, () => {

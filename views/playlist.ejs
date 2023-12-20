@@ -108,15 +108,26 @@
               <div class="heading">
                 <h4>#</h4>
                 <h4>Title</h4>
-                <h4>Duration</h4>
+                <img src="/images/time.png" alt="" style="filter:brightness(150%)">
               </div>
               <% let count=1;
+              let minDurations=[];
               let array=result;
+              function convertDecimalToTime(decimalValue) {
+                const hours = Math.floor(decimalValue);
+                const minutes = Math.round((decimalValue % 1) * 60);
+              
+                const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+                return formattedTime;
+              }
+              Durations[0].forEach((element) => {// converting seconds to minutes upto 2 decimal values
+                minDurations.push(convertDecimalToTime(Number((element/60).toFixed(2))));
+              })
               if(result==""){
                 array=altresult;
               }
               array.forEach((element,index) => {%>
-                <div class="element <%= element.song_name %>">
+                <div class="element <%= element.song_id %>">
                   <h5><%= count %></h5>
                   <div class="songName">
                     <img src="<%= element.song_poster %>" alt="">
@@ -125,7 +136,7 @@
                       <h5 class="fade"><%= element.artist_name %></h5>
                     </div>
                   </div>
-                  <h5>3:05</h5>
+                  <h5><%= minDurations[index] %></h5>
                 </div>
               <% count++}); %>
             </div>
@@ -134,13 +145,13 @@
       </div>
       <div class="flag" style="display:none"><%= flag %></div>
       <div class="sec sec3"></div>
-      <div class="sec sec4"></div>
+      <div class="sec sec4">
+        <audio controls>
+          <source src="" type="audio/mp3">
+          Your browser does not support the audio element.
+        </audio>
+      </div>
     </div>
     <script src="/scripts/script.js"></script>
-    <script>
-        let currentPlaylistName=('<%= currentPlaylistName %>').replace(/\s/g, '')
-        /*console.log(currentPlaylistName);*/
-        $(`.sec1 .library .list .${currentPlaylistName}`).css('background-color','#353535');
-    </script>
   </body>
 </html>

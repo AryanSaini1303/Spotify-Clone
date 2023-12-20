@@ -632,15 +632,16 @@ body {
   grid-template-columns: 1fr 15fr 2fr;
   padding: 0 1rem;
   font-family: "Nunito", sans-serif;
+  align-items: center;
 }
 .sec2 .mainScreen .songSection .songs .element {
   display: grid;
   grid-template-columns: 1fr 15fr 2fr;
   font-family: "Nunito", sans-serif;
+  text-decoration: none;
   cursor: pointer;
   padding: 0 1rem;
   border-radius: 5px;
-  transition: 0.3s background-color;
 }
 .sec2 .mainScreen .songSection .songs .songName .songInfo .fade {
   opacity: 0.7;

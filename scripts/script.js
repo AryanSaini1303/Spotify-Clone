@@ -180,7 +180,7 @@ $(".sec1 .title div").click(() => {
   var data = JSON.stringify({ variable: variableValue });
   xhr.send(data);
 });
-console.log($(".flag").text());
+// console.log($(".flag").text());
 if ($(".flag").text() == "true") {
   $(".nav .text").css("display", "none");
   $(".add").css("display", "none");
@@ -197,3 +197,31 @@ if ($(".flag").text() == "true") {
   $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
   count++;
 }
+
+$(".sec2 .mainScreen .songSection .songs .element").click(function () {
+  let song_name = $(this).prop('class').replace('element ', '');
+  var dataToSend = { variableName: song_name };
+  var xhr = new XMLHttpRequest();
+  xhr.open('post', '/play', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  var jsonData = JSON.stringify(dataToSend);
+  xhr.send(jsonData);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        try {
+          // Parse the response text as JSON
+          const response = JSON.parse(xhr.responseText);
+          console.log('Request successful', response);
+          $(".sec4>audio").attr('src',response+".mp3");
+          const audioElement=$(".sec4>audio")[0];
+          audioElement.play();
+        } catch (error) {
+          console.error('Error parsing JSON response:', error);
+        }
+      } else {
+        console.error('Request failed with status:', xhr.status);
+      }
+    }
+  };
+});
