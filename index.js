@@ -135,8 +135,8 @@ app.get('/playlist',async(req,res)=>{
   const result=response.rows;
   const altresponse=await db.query('select * from user_songs where liked=1');
   const altresult=altresponse.rows;
-  console.log("result",result);
-  console.log("altresult",altresult);
+  // console.log("result",result);
+  // console.log("altresult",altresult);
   // console.log(query);
   if(query=="Liked Songs"){
     currentPoster="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg";
