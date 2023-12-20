@@ -2,7 +2,6 @@ body {
   margin: 0;
   padding: 0;
   background-color: black;
-  animation: fadeIn 0.05s forwards;
 }
 
 @keyframes fadeIn {
@@ -22,6 +21,7 @@ body {
   grid-template-columns: 1fr 3fr 1.2fr;
   grid-template-rows: 9.5fr 1fr;
   grid-gap: 10px;
+  animation: fadeIn 0.05s forwards;
 }
 .sec {
   background-color: black;
