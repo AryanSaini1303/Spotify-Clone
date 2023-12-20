@@ -2,6 +2,31 @@ body {
   margin: 0;
   padding: 0;
   background-color: black;
+  /* For Webkit browsers (Chrome, Safari) */
+  ::-webkit-scrollbar {
+    width: 6px; /* Adjust the width as needed */
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background-color: transparent; /* Set track color to transparent */
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(
+      0,
+      0,
+      0,
+      0.5
+    ); /* Set handle color with some transparency */
+    border-radius: 6px; /* Optional: rounded corners for the handle */
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Change handle color on hover */
+  }
 }
 
 @keyframes fadeIn {
@@ -205,9 +230,9 @@ body {
 }
 .sec2 > .nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: transparent;
+  justify-content: space-between;
 }
 .sec2 > .nav .sec2btn {
   height: 2rem;
@@ -513,8 +538,8 @@ body {
   margin-top: 8px;
 }
 .sec2 .mainScreen .playlistInfo .textInfo .details .profilePic > * {
-  height: 2rem;
-  width: 2rem;
+  height: 1.5rem;
+  width: 1.5rem;
   border-radius: 50%;
   margin: 0;
   padding: 0;
@@ -539,22 +564,22 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.sec2 .mainScreen{
+.sec2 .mainScreen {
   background-color: transparent;
 }
-.sec2 .mainScreen .songSection .nav{
+.sec2 .mainScreen .songSection .nav {
   /* display: flex;
   gap:25px; */
   display: grid;
   grid-template-columns: 5rem 5rem;
   /* grid-gap: 25px; */
 }
-.sec2 .mainScreen .songSection .nav .playpausebtn>img{
+.sec2 .mainScreen .songSection .nav .playpausebtn > img {
   height: 1.2rem;
   width: 1.2rem;
   margin-left: 0.3rem;
 }
-.sec2 .mainScreen .songSection .nav .playpausebtn{
+.sec2 .mainScreen .songSection .nav .playpausebtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -566,11 +591,11 @@ body {
   cursor: pointer;
 }
 
-.sec2 .mainScreen .songSection .nav .playpausebtn:hover{
-  transform: scale(1.05,1.05);
+.sec2 .mainScreen .songSection .nav .playpausebtn:hover {
+  transform: scale(1.05, 1.05);
 }
 
-.sec2 .mainScreen .songSection .nav .shuffle{
+.sec2 .mainScreen .songSection .nav .shuffle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -579,13 +604,47 @@ body {
   cursor: pointer;
 }
 
-.sec2 .mainScreen .songSection .nav .shuffle:hover{
-  transform: scale(1.05,1.05);
+.sec2 .mainScreen .songSection .nav .shuffle:hover {
+  transform: scale(1.05, 1.05);
   opacity: 1;
   filter: brightness(150%);
 }
 
-.sec2 .mainScreen .songSection .nav .shuffle>img{
+.sec2 .mainScreen .songSection .nav .shuffle > img {
   height: 2.6rem;
   width: 2.6rem;
+}
+.sec2 .mainScreen .songSection .songs .songName {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.sec2 .mainScreen .songSection .songs .songName > img {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 5px;
+}
+.sec2 .mainScreen .songSection .songs .songName .songInfo > * {
+  margin: 0;
+}
+.sec2 .mainScreen .songSection .songs .heading {
+  display: grid;
+  grid-template-columns: 1fr 15fr 2fr;
+  padding: 0 1rem;
+  font-family: "Nunito", sans-serif;
+}
+.sec2 .mainScreen .songSection .songs .element {
+  display: grid;
+  grid-template-columns: 1fr 15fr 2fr;
+  font-family: "Nunito", sans-serif;
+  cursor: pointer;
+  padding: 0 1rem;
+  border-radius: 5px;
+  transition: 0.3s background-color;
+}
+.sec2 .mainScreen .songSection .songs .songName .songInfo .fade {
+  opacity: 0.7;
+}
+.sec2 .mainScreen .songSection .songs .element:hover {
+  background-color: rgba(128, 128, 128, 0.129);
 }

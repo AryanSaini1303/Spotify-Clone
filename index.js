@@ -131,14 +131,18 @@ app.get('/search',async(req,res)=>{
 app.get('/playlist',async(req,res)=>{
   let currentPoster;
   const query=(req.query.q);
-  const result=await db.query('select * from user_songs where playlist=$1',[query]);
-  // console.log(result.rows);
+  const response=await db.query('select * from user_songs where playlist=$1',[query]);
+  const result=response.rows;
+  const altresponse=await db.query('select * from user_songs where liked=1');
+  const altresult=altresponse.rows;
+  console.log("result",result);
+  console.log("altresult",altresult);
   // console.log(query);
   if(query=="Liked Songs"){
     currentPoster="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg";
   }
   else{
-    currentPoster=result.rows[0].song_poster;
+    currentPoster=result[0].song_poster;
   }
   // console.log(result.rows.length);
   res.render('playlist',{
@@ -149,8 +153,10 @@ app.get('/playlist',async(req,res)=>{
     greetings,
     currentPlaylistName:query,
     currentPlaylistPoster:currentPoster,
-    numberOfSongs:result.rows.length,
+    numberOfSongs:result.length,
     flag,
+    result,
+    altresult,
   })
 })
 

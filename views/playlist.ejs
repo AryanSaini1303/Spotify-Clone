@@ -104,7 +104,31 @@
                 <img src="/images/arrow.png" alt="">
               </div>
             </div>
-            <div class="songs"></div>
+            <div class="songs">
+              <div class="heading">
+                <h4>#</h4>
+                <h4>Title</h4>
+                <h4>Duration</h4>
+              </div>
+              <% let count=1;
+              let array=result;
+              if(result==""){
+                array=altresult;
+              }
+              array.forEach((element,index) => {%>
+                <div class="element <%= element.song_name %>">
+                  <h5><%= count %></h5>
+                  <div class="songName">
+                    <img src="<%= element.song_poster %>" alt="">
+                    <div class="songInfo">
+                      <h4><%= element.song_name %></h4>
+                      <h5 class="fade"><%= element.artist_name %></h5>
+                    </div>
+                  </div>
+                  <h5>3:05</h5>
+                </div>
+              <% count++}); %>
+            </div>
           </div>
         </div>
       </div>
