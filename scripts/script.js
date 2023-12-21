@@ -38,7 +38,7 @@ $(".title>div").click(() => {
     $(".nav .text").css("display", "none");
     $(".add").css("display", "none");
     $(".title>div h4").css("display", "none");
-    $(".wrapper").css("grid-template-columns", "0.1fr 3fr 1.2fr");
+    $(".wrapper>.Dynamic-Content").css("grid-template-columns", "0.1fr 3fr 1.2fr");
     $(".library .title").css("padding", "1.2rem 0");
     $(".sec1 .element .info").css("display", "none");
     $(".nav>*").css("padding", "0 1.7rem");
@@ -52,7 +52,7 @@ $(".title>div").click(() => {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
     $(".title>div h4").css("display", "block");
-    $(".wrapper").css("grid-template-columns", "1fr 3fr 1.2fr");
+    $(".wrapper>.Dynamic-Content").css("grid-template-columns", "1fr 3fr 1.2fr");
     $(".library .title").css("padding", "0 1.4rem");
     $(".sec1 .element .info").css("display", "block");
     $(".nav>*").css("padding", "0 1rem");
@@ -185,7 +185,7 @@ if ($(".flag").text() == "true") {
   $(".nav .text").css("display", "none");
   $(".add").css("display", "none");
   $(".title>div h4").css("display", "none");
-  $(".wrapper").css("grid-template-columns", "0.1fr 3fr 1.2fr");
+  $(".wrapper>.Dynamic-Content").css("grid-template-columns", "0.1fr 3fr 1.2fr");
   $(".library .title").css("padding", "1.2rem 0");
   $(".sec1 .element .info").css("display", "none");
   $(".nav>*").css("padding", "0 1.7rem");

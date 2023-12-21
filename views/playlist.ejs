@@ -19,132 +19,134 @@
   </head>
   <body>
     <div class="wrapper">
-      <div class="sec sec1">
-        <div class="nav">
-          <a href="/" class="home">
-            <img src="/images/home.png" alt="" />
-            <div class="text">Home</div>
-          </a href="/">
-          <a href="/getSearch" class="search">
-            <img src="/images/loupe.png" alt="" />
-            <div class="text">Search</div>
-          </a href="/getSearch">
-        </div>
-        <div class="library">
-          <div class="title">
-            <div>
-              <img src="/images/library.png" alt="" />
-              <h4>Your Library</h4>
+      <div class="Dynamic-Content">
+        <div class="sec sec1">
+          <div class="nav">
+            <a href="/" class="home">
+              <img src="/images/home.png" alt="" />
+              <div class="text">Home</div>
+            </a href="/">
+            <a href="/getSearch" class="search">
+              <img src="/images/loupe.png" alt="" />
+              <div class="text">Search</div>
+            </a href="/getSearch">
+          </div>
+          <div class="library">
+            <div class="title">
+              <div>
+                <img src="/images/library.png" alt="" />
+                <h4>Your Library</h4>
+              </div>
+              <button class="add"><img src="/images/plus.png" alt="" /></button>
             </div>
-            <button class="add"><img src="/images/plus.png" alt="" /></button>
-          </div>
-          <div class="list">
-            <% for(let i=0;i<playlist.length;i++){
-                let playlistName=playlist[i].replace(/\s/g,'')%>
-                <a href="/playlist?q=<%= playlist[i] %>" class='element <%= playlistName %>'>
-                  <div class="poster">
-                    <img src="<%= poster[i] %>" alt="">
-                  </div>
-                  <div class="info">
-                    <h4 class="name playlistName"><%= playlist[i] %></h4>
-                    <h5 class="name text">Playlist <div class="dot"></div> <%= current_username %></h5>
-                  </div>
-                </a>
-            <% } %>
-            <a href="/playlist?q=Liked Songs" class="element LikedSongs">
-              <div class="poster">
-                <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
-              </div>
-              <div class="info">
-                <h4 class="name playlistName">Liked Songs</h4>
-                <h5 class="name text">Playlist <div class="dot"></div> <%= likedSongsCount %> Songs</h5>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="sec sec2">
-        <div class="nav">
-          <div class="forbackbtn">
-            <div class="sec2btn backward"><img src="/images/backwards.png" alt="" onclick="goBackwards()"></div>
-            <div class="sec2btn forward"><img src="/images/forwards.png" alt="" onclick="goForwards()"></div>
-          </div>
-          <div class="profile"><img src="/images/profile.jpg" alt=""></div>
-        </div>
-        <div class="mainScreen">
-          <div class="playlistInfo">
-              <% if(currentPlaylistPoster){%>
-                  <img src="<%= currentPlaylistPoster %>" alt="">
-              <%}
-              else{%>
-                  <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
-              <%}%>
-              <div class="textInfo">
-                  <h4>Playlist</h4>
-                  <h1><%= currentPlaylistName %></h1>
-                  <div class="details">
-                      <div class="profilePic"><img src="/images/profile.jpg" alt=""></div>
-                      <h4 class="username"><%= current_username %></h4>
-                      <div class="dot"></div>
-                      <% if(currentPlaylistName!='Liked Songs'){%>
-                          <h4><%= numberOfSongs %> song(s)</h4>
-                      <%}
-                      else{%>
-                          <h4><%= likedSongsCount %> song(s)</h4>
-                      <%}%>
-                  </div>
-              </div>
-          </div>
-          <div class="songSection">
-            <div class="nav">
-              <div class="playpausebtn">
-                <img src="/images/play-button.png" alt="">
-              </div>
-              <div class="shuffle">
-                <img src="/images/arrow.png" alt="">
-              </div>
-            </div>
-            <div class="songs">
-              <div class="heading">
-                <h4>#</h4>
-                <h4>Title</h4>
-                <img src="/images/time.png" alt="" style="filter:brightness(150%)">
-              </div>
-              <% let count=1;
-              let minDurations=[];
-              let array=result;
-              function convertDecimalToTime(decimalValue) {
-                const hours = Math.floor(decimalValue);
-                const minutes = Math.round((decimalValue % 1) * 60);
-              
-                const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
-                return formattedTime;
-              }
-              Durations[0].forEach((element) => {// converting seconds to minutes upto 2 decimal values
-                minDurations.push(convertDecimalToTime(Number((element/60).toFixed(2))));
-              })
-              if(result==""){
-                array=altresult;
-              }
-              array.forEach((element,index) => {%>
-                <div class="element <%= element.song_id %>">
-                  <h5><%= count %></h5>
-                  <div class="songName">
-                    <img src="<%= element.song_poster %>" alt="">
-                    <div class="songInfo">
-                      <h4><%= element.song_name %></h4>
-                      <h5 class="fade"><%= element.artist_name %></h5>
+            <div class="list">
+              <% for(let i=0;i<playlist.length;i++){
+                  let playlistName=playlist[i].replace(/\s/g,'')%>
+                  <a href="/playlist?q=<%= playlist[i] %>" class='element <%= playlistName %>'>
+                    <div class="poster">
+                      <img src="<%= poster[i] %>" alt="">
                     </div>
-                  </div>
-                  <h5><%= minDurations[index] %></h5>
+                    <div class="info">
+                      <h4 class="name playlistName"><%= playlist[i] %></h4>
+                      <h5 class="name text">Playlist <div class="dot"></div> <%= current_username %></h5>
+                    </div>
+                  </a>
+              <% } %>
+              <a href="/playlist?q=Liked Songs" class="element LikedSongs">
+                <div class="poster">
+                  <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
                 </div>
-              <% count++}); %>
+                <div class="info">
+                  <h4 class="name playlistName">Liked Songs</h4>
+                  <h5 class="name text">Playlist <div class="dot"></div> <%= likedSongsCount %> Songs</h5>
+                </div>
+              </a>
             </div>
           </div>
         </div>
+        <div class="sec sec2">
+          <div class="nav">
+            <div class="forbackbtn">
+              <div class="sec2btn backward"><img src="/images/backwards.png" alt="" onclick="goBackwards()"></div>
+              <div class="sec2btn forward"><img src="/images/forwards.png" alt="" onclick="goForwards()"></div>
+            </div>
+            <div class="profile"><img src="/images/profile.jpg" alt=""></div>
+          </div>
+          <div class="mainScreen">
+            <div class="playlistInfo">
+                <% if(currentPlaylistPoster){%>
+                    <img src="<%= currentPlaylistPoster %>" alt="">
+                <%}
+                else{%>
+                    <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
+                <%}%>
+                <div class="textInfo">
+                    <h4>Playlist</h4>
+                    <h1><%= currentPlaylistName %></h1>
+                    <div class="details">
+                        <div class="profilePic"><img src="/images/profile.jpg" alt=""></div>
+                        <h4 class="username"><%= current_username %></h4>
+                        <div class="dot"></div>
+                        <% if(currentPlaylistName!='Liked Songs'){%>
+                            <h4><%= numberOfSongs %> song(s)</h4>
+                        <%}
+                        else{%>
+                            <h4><%= likedSongsCount %> song(s)</h4>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+            <div class="songSection">
+              <div class="nav">
+                <div class="playpausebtn">
+                  <img src="/images/play-button.png" alt="">
+                </div>
+                <div class="shuffle">
+                  <img src="/images/arrow.png" alt="">
+                </div>
+              </div>
+              <div class="songs">
+                <div class="heading">
+                  <h4>#</h4>
+                  <h4>Title</h4>
+                  <img src="/images/time.png" alt="" style="filter:brightness(150%)">
+                </div>
+                <% let count=1;
+                let minDurations=[];
+                let array=result;
+                function convertDecimalToTime(decimalValue) {
+                  const hours = Math.floor(decimalValue);
+                  const minutes = Math.round((decimalValue % 1) * 60);
+                
+                  const formattedTime = `${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+                  return formattedTime;
+                }
+                Durations[0].forEach((element) => {// converting seconds to minutes upto 2 decimal values
+                  minDurations.push(convertDecimalToTime(Number((element/60).toFixed(2))));
+                })
+                if(result==""){
+                  array=altresult;
+                }
+                array.forEach((element,index) => {%>
+                  <div class="element <%= element.song_id %>">
+                    <h5><%= count %></h5>
+                    <div class="songName">
+                      <img src="<%= element.song_poster %>" alt="">
+                      <div class="songInfo">
+                        <h4><%= element.song_name %></h4>
+                        <h5 class="fade"><%= element.artist_name %></h5>
+                      </div>
+                    </div>
+                    <h5><%= minDurations[index] %></h5>
+                  </div>
+                <% count++}); %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flag" style="display:none"><%= flag %></div>
+        <div class="sec sec3"></div>
       </div>
-      <div class="flag" style="display:none"><%= flag %></div>
-      <div class="sec sec3"></div>
       <div class="sec sec4">
         <audio controls>
           <source src="" type="audio/mp3">
