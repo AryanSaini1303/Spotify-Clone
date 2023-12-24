@@ -135,7 +135,7 @@ app.get("/search", async (req, res) => {
 app.get("/playlist", async (req, res) => {
   let currentPoster;
   const query = req.query.q;
-  console.log(query);
+  // console.log(query);
   const response = await db.query(
     "select * from user_songs where playlist=$1",
     [query]
