@@ -89,7 +89,7 @@ function search() {
   xhr.onload = function () {
     if (xhr.status === 200) {
       let results = JSON.parse(xhr.responseText);
-      console.log(results.results);
+      // console.log(results.results);
       let info = results.results;
       // $(".sec2 .results").text(results[0].song_name);
       let loopRange = results.loopRange;
@@ -165,7 +165,7 @@ function search() {
   };
 
   xhr.send();
-  console.log(song_name);
+  // console.log(song_name);
 }
 $(".sec1 .title div").click(() => {
   var variableValue = true;
@@ -197,8 +197,12 @@ if ($(".flag").text() == "true") {
   $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
   count++;
 }
-
-$(".sec2 .mainScreen .songSection .songs .element").click(function () {
+function playSongs(){
+  // we created a function as this function is used by a div which is a part of "sec2" which is dynamically fetched and replaced by AJAX request which essentially detaches the event handlers from their containers/divs for example playSongs function from ".element"
+  // Use event delegation to handle clicks on dynamically added elements
+  // here we specify the parent container i.e. "songs" and the attach event handler to descendants i.e. "element"
+$(".mainScreen .songSection .songs").on('click', '.element', function (event) {
+  event.preventDefault();
   let song_name = $(this).prop('class').replace('element ', '');
   var dataToSend = { variableName: song_name };
   var xhr = new XMLHttpRequest();
@@ -212,9 +216,8 @@ $(".sec2 .mainScreen .songSection .songs .element").click(function () {
         try {
           // Parse the response text as JSON
           const response = JSON.parse(xhr.responseText);
-          console.log('Request successful', response);
-          $(".sec4>audio").attr('src',response+".mp3");
-          const audioElement=$(".sec4>audio")[0];
+          $(".sec4>audio").attr('src', response + ".mp3");
+          const audioElement = $(".sec4>audio")[0];
           audioElement.play();
         } catch (error) {
           console.error('Error parsing JSON response:', error);
@@ -225,6 +228,7 @@ $(".sec2 .mainScreen .songSection .songs .element").click(function () {
     }
   };
 });
+}
 $(".sec1 .nav .search").click(()=>{
   $.ajax({// ajax is used to fetch the data from the server and replace that data into specifc containers of the ejs file
     url: '/getSearch', // Replace with your server route
@@ -232,6 +236,38 @@ $(".sec1 .nav .search").click(()=>{
     success: function(data) {
       // Replace the content in the dynamicContent div
       $('.sec2').html(data);
+    }
+  });
+})
+$(".sec1 .library .list .element").click(function(){
+  $(".search").css("opacity", "0.6");
+  $(".search>img").attr("src", "/images/loupe.png");
+  var queryParamValue = $(this).prop('class').replace('element ','');
+  // console.log("=>",queryParamValue);
+  $.ajax({
+    url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
+    method: "GET",
+    success: function(data) {
+      $(".sec2").html(data);
+    },
+    error: function(xhr, status, error) {
+      console.error("Error loading content:", error);
+    }
+  });
+})
+$(".sec2 .playlists .element").click(function(){
+  $(".search").css("opacity", "0.6");
+  $(".search>img").attr("src", "/images/loupe.png");
+  var queryParamValue = $(this).prop('class').replace('element ','');
+  // console.log("=>",queryParamValue);
+  $.ajax({
+    url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
+    method: "GET",
+    success: function(data) {
+      $(".sec2").html(data);
+    },
+    error: function(xhr, status, error) {
+      console.error("Error loading content:", error);
     }
   });
 })

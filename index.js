@@ -84,8 +84,11 @@ app.get("/", async (req, res) => {
   const result1 = await db.query(
     `select song_name from user_songs where user_id=${current_user} and liked=1`
   );
-  const result2 = await db.query(`select name from users where user_id=1`);
+  const result2 = await db.query(`select name from users where user_id=$1`,[current_user]);
   current_username = result2.rows[0].name;
+  const response=await db.query(`select distinct playlist_id from user_songs where user_id=$1`,[current_user]);
+  const result3=response.rows;
+  // console.log(result3);
   // console.log(result1.rows.length);
   // console.log(playlist, poster);
   likedSongsCount = result1.rows.length;
@@ -96,7 +99,6 @@ app.get("/", async (req, res) => {
   //   current_username,
   //   greetings,
   // });
-  // console.log(playlist);
   res.render("index", {
     playlist: playlist,
     poster: poster,
@@ -104,6 +106,7 @@ app.get("/", async (req, res) => {
     current_username,
     greetings,
     flag,
+    playlist_id: result3,
   });
 });
 app.get("/getSearch", (req, res) => {
@@ -134,19 +137,28 @@ app.get("/search", async (req, res) => {
 });
 app.get("/playlist", async (req, res) => {
   let currentPoster;
-  const query = req.query.q;
+  var response;
+  const query = req.query.queryParam;
   // console.log(query);
-  const response = await db.query(
-    "select * from user_songs where playlist=$1",
-    [query]
-  );
-  const result = response.rows;
+  var result;
   const altresponse = await db.query("select * from user_songs where liked=1");
   const altresult = altresponse.rows;
-  // console.log("result",result);
+  // console.log(altresult);
+  var response1;
+  var result1;
+  if(query!="LikedSongs"){
+    response1=await db.query('select distinct playlist from user_songs where playlist_id=$1',[query]);
+    result1=response1.rows;
+    // console.log("result1",result1);
+    response = await db.query(
+      "select * from user_songs where playlist_id=$1",
+      [query]
+    );
+    result = response.rows;
+  }
   // console.log("altresult",altresult);
   // console.log(query);
-  if (query == "Liked Songs") {
+  if (query == "LikedSongs") {
     currentPoster =
     "https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg";
   } else {
@@ -156,7 +168,7 @@ app.get("/playlist", async (req, res) => {
   /******************************************************************************************* */
   let Durations=[];
   let array=result;
-  if(result==""){
+  if(query=="LikedSongs"){
     array=altresult;
   }
   const promises = array.map((element) => {
@@ -173,7 +185,16 @@ app.get("/playlist", async (req, res) => {
       );
     });
   });
-  
+  let currentPlaylistName;  
+  let numberOfSongs;
+  if(query=="LikedSongs"){
+    currentPlaylistName="Liked Songs";
+    numberOfSongs = altresult.length;
+  }
+  else{
+    currentPlaylistName=result1[0].playlist;
+    numberOfSongs = altresult.length;
+  }
   Promise.all(promises)
     .then((durations) => {
       // console.log(durations);
@@ -185,9 +206,9 @@ app.get("/playlist", async (req, res) => {
         likedSongsCount,
         current_username,
         greetings,
-        currentPlaylistName: query,
+        currentPlaylistName,
         currentPlaylistPoster: currentPoster,
-        numberOfSongs: result.length,
+        numberOfSongs,
         flag,
         result,
         altresult,

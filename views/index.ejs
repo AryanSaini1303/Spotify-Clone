@@ -41,7 +41,7 @@
             </div>
             <div class="list">
               <% for(let i=0;i<playlist.length;i++){ %>
-              <a href="/playlist?q=<%= playlist[i] %>" class="element <%= playlist[i] %>.replace(/\s/g, '')">
+              <div class="element <%= playlist_id[i].playlist_id %>">
                 <div class="poster">
                   <img src="<%= poster[i] %>" alt="">
                 </div>
@@ -49,9 +49,9 @@
                   <h4 class="name playlistName"><%= playlist[i] %></h4>
                   <h5 class="name text">Playlist <div class="dot"></div> <%= current_username %></h5>
                 </div>
-              </a>
+              </div>
               <% } %>
-              <a href="/playlist?q=Liked Songs" class="element LikedSongs">
+              <div class="element LikedSongs">
                 <div class="poster">
                   <img src="https://i.pinimg.com/564x/c6/df/56/c6df5688e0013bf4168fc39a8465e2bd.jpg" alt="">
                 </div>
@@ -59,7 +59,7 @@
                   <h4 class="name playlistName">Liked Songs</h4>
                   <h5 class="name text">Playlist <div class="dot"></div> <%= likedSongsCount %> Songs</h5>
                 </div>
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
             <% for(let i=0;i<playlist.length;i++){
               let name;
               name=playlist[i].replace(/\s/g, '');%>
-              <a href="/playlist?q=<%= playlist[i] %>" class='element <%= name %>'><!--adding name of the playlist as class after removing the blank spaces so that we can easily compare in script while retaining the previous class (element)-->
+              <div class="element <%= playlist_id[i].playlist_id %>"><!--adding name of the playlist as class after removing the blank spaces so that we can easily compare in script while retaining the previous class (element)-->
                 <div class="poster">
                   <img src="<%= poster[i] %>" alt="">
                 </div>
@@ -84,7 +84,7 @@
                   <h4 class="name playlistName"><%= playlist[i] %></h4>
                 </div>
                 <div class="playpausebtn"><img src="/images/play-button.png" alt=""></div>
-              </a>
+              </div>
             <% } %>
           </div>
         </div>
