@@ -121,9 +121,11 @@ body {
 }
 .sec1 .search {
   text-decoration: none;
+  cursor: pointer;
 }
 .sec1 .home {
   text-decoration: none;
+  cursor: pointer;
 }
 .sec1 .search:hover {
   opacity: 1;

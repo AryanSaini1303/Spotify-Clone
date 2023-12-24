@@ -225,3 +225,13 @@ $(".sec2 .mainScreen .songSection .songs .element").click(function () {
     }
   };
 });
+$(".sec1 .nav .search").click(()=>{
+  $.ajax({// ajax is used to fetch the data from the server and replace that data into specifc containers of the ejs file
+    url: '/getSearch', // Replace with your server route
+    method: 'GET',
+    success: function(data) {
+      // Replace the content in the dynamicContent div
+      $('.sec2').html(data);
+    }
+  });
+})
