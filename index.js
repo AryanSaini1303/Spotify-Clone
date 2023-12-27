@@ -124,11 +124,11 @@ app.get("/search", async (req, res) => {
   // console.log(query)
   try {
     let results = await db.query(
-      "SELECT song_name, artist_name, song_poster FROM all_songs WHERE LOWER(song_name) LIKE $1",
+      "SELECT song_name, artist_name, song_poster, song_id FROM all_songs WHERE LOWER(song_name) LIKE $1",
       [`%${query.toLowerCase()}%`]
     );
-    // console.log(results.rows);
     results = results.rows;
+    // console.log(results);
     let loopRange = results.length;
     res.json({ results, loopRange });
   } catch (error) {
@@ -165,7 +165,6 @@ app.get("/playlist", async (req, res) => {
     currentPoster = result[0].song_poster;
   }
   // console.log(result.rows.length);
-  /******************************************************************************************* */
   let Durations=[];
   let array=result;
   if(query=="LikedSongs"){
@@ -193,7 +192,7 @@ app.get("/playlist", async (req, res) => {
   }
   else{
     currentPlaylistName=result1[0].playlist;
-    numberOfSongs = altresult.length;
+    numberOfSongs = result.length;
   }
   Promise.all(promises)
     .then((durations) => {
@@ -218,7 +217,6 @@ app.get("/playlist", async (req, res) => {
     .catch((err) => {
       console.error(err);
     });
-  /******************************************************************************************* */
 });
 
 app.post("/collapse", (req, res) => {
@@ -235,7 +233,7 @@ app.post("/collapse", (req, res) => {
 app.post("/play",async (req,res)=>{
   const query=req.body.variableName;
   // console.log(query);
-  const response=await db.query('select song_path from user_songs where user_id=$1 and song_id=$2',[current_user,query]);
+  const response=await db.query('select song_path from all_songs where song_id=$1',[query]);
   const result=response.rows;
   // console.log(result);
   res.json(result[0].song_path);

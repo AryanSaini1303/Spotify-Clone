@@ -105,27 +105,25 @@ function search() {
       }
       for (let i = 0; i < loopRange; i++) {
         if (i == 0) {
-          let name = song_name[i].replace(/\s/g, "");
-          name = name.replace("'", "");
+          let id = info[i].song_id;
           $(".sec2 .results").append(`
             <div class="topSong">
-              <div class="element ${name}">
+              <div class="element" onclick="play()">
                 <div class="poster"><img src="${song_poster[i]}" alt=""></div>
                 <div class="info">
                   <div class="song_name"><h4>${song_name[i]}</h4></div>
                   <div class="artist_name"><h4>${artist_name[i]}</h4></div>
                 </div>
-                <div class="playpausebtn"><img src="/images/play-button.png" alt=""></div>
+                <div class="playpausebtn ${id}"><img src="/images/play-button.png" alt=""></div>
               </div>
             </div>
             <div class="otherSongs"></div>
           `);
         } else {
-          let name = song_name[i].replace(/\s/g, "");
-          name = name.replace("'", "");
+          let id=info[i].song_id
           // console.log(name);
           $(".sec2 .results .otherSongs").append(`
-              <div class="element ${name}">
+              <div class="element ${id}" onclick="play1()">
                 <div class="poster"><img src="${song_poster[i]}" alt=""></div>
                 <img src="/images/play-button.png" alt="" class="playpausebtn">
                 <div class="info">
@@ -203,8 +201,9 @@ function playSongs(){
   // here we specify the parent container i.e. "songs" and the attach event handler to descendants i.e. "element"
 $(".mainScreen .songSection .songs").on('click', '.element', function (event) {
   event.preventDefault();
-  let song_name = $(this).prop('class').replace('element ', '');
-  var dataToSend = { variableName: song_name };
+  let song_id = $(this).prop('class').replace('element ', '');
+  console.log(song_id);
+  var dataToSend = { variableName: song_id };
   var xhr = new XMLHttpRequest();
   xhr.open('post', '/play', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
@@ -271,3 +270,65 @@ $(".sec2 .playlists .element").click(function(){
     }
   });
 })
+function play(){
+  $(".sec2 .results .topSong ").on('click','.element .playpausebtn',function(event){// use 'on' to implement event delegation 
+    // console.log($(this).prop('class'));
+    event.preventDefault();
+    let song_id = $(this).prop('class').replace('playpausebtn ', '');
+    console.log(song_id);
+    var dataToSend = { variableName: song_id };
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/play', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    var jsonData = JSON.stringify(dataToSend);
+    xhr.send(jsonData);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          try {
+            // Parse the response text as JSON
+            const response = JSON.parse(xhr.responseText);
+            $(".sec4>audio").attr('src', response + ".mp3");
+            const audioElement = $(".sec4>audio")[0];
+            audioElement.play();
+          } catch (error) {
+            console.error('Error parsing JSON response:', error);
+          }
+        } else {
+          console.error('Request failed with status:', xhr.status);
+        }
+      }
+    };
+  })
+}
+function play1(){
+  $(".sec2 .results .otherSongs ").on('click','.element',function(event){// use 'on' to implement event delegation 
+    // console.log($(this).prop('class'));
+    event.preventDefault();
+    let song_id = $(this).prop('class').replace('element ', '');
+    console.log(song_id);
+    var dataToSend = { variableName: song_id };
+    var xhr = new XMLHttpRequest();
+    xhr.open('post', '/play', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    var jsonData = JSON.stringify(dataToSend);
+    xhr.send(jsonData);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          try {
+            // Parse the response text as JSON
+            const response = JSON.parse(xhr.responseText);
+            $(".sec4>audio").attr('src', response + ".mp3");
+            const audioElement = $(".sec4>audio")[0];
+            audioElement.play();
+          } catch (error) {
+            console.error('Error parsing JSON response:', error);
+          }
+        } else {
+          console.error('Request failed with status:', xhr.status);
+        }
+      }
+    };
+  })
+}
