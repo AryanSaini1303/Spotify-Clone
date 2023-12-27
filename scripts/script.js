@@ -1,13 +1,5 @@
-function goBackwards() {
-  window.history.back();
-}
-function goForwards() {
-  if (window.history.forward() != null) {
-    window.history.forward();
-  } else {
-    $(".sec2 > .nav .forward").css("cursor", "not-allowed");
-  }
-}
+var ajaxHistory=[];
+var currentIndex=-1;
 
 if ($(".greetings").text()) {
   $(".home>img").attr("src", "/images/homeActive.png");
@@ -65,16 +57,15 @@ $(".title>div").click(() => {
   }
   count++;
 });
-let count1 = 0;
-$(".sec2 .playlists .element").hover(function () {
-  count1++;
+$(".sec2").on('mouseenter','.playlists .element',function () {
   // console.log($(this).prop('class'));//gives the class of the current hovering element
   let className = $(this).prop("class").replace("element ", "");
-  if (count1 % 2) {
     $(`.${className} .playpausebtn`).css("opacity", "1");
-  } else {
-    $(`.${className} .playpausebtn`).css("opacity", "0");
-  }
+});
+$(".sec2").on('mouseleave','.playlists .element',function () {
+  // console.log($(this).prop('class'));//gives the class of the current hovering element
+  let className = $(this).prop("class").replace("element ", "");
+  $(`.${className} .playpausebtn`).css("opacity", "0");
 });
 function search() {
   let song_name = [];
@@ -233,6 +224,9 @@ $(".sec1 .nav .search").click(()=>{
     url: '/getSearch', // Replace with your server route
     method: 'GET',
     success: function(data) {
+      currentIndex++;
+      ajaxHistory.splice(currentIndex + 1);
+      ajaxHistory.push(data);
       // Replace the content in the dynamicContent div
       $('.sec2').html(data);
     }
@@ -247,6 +241,9 @@ $(".sec1 .library .list .element").click(function(){
     url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
     method: "GET",
     success: function(data) {
+      currentIndex++;
+      ajaxHistory.splice(currentIndex + 1);
+      ajaxHistory.push(data);
       $(".sec2").html(data);
     },
     error: function(xhr, status, error) {
@@ -254,22 +251,27 @@ $(".sec1 .library .list .element").click(function(){
     }
   });
 })
-$(".sec2 .playlists .element").click(function(){
-  $(".search").css("opacity", "0.6");
-  $(".search>img").attr("src", "/images/loupe.png");
-  var queryParamValue = $(this).prop('class').replace('element ','');
-  // console.log("=>",queryParamValue);
-  $.ajax({
-    url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
-    method: "GET",
-    success: function(data) {
-      $(".sec2").html(data);
-    },
-    error: function(xhr, status, error) {
-      console.error("Error loading content:", error);
-    }
-  });
-})
+function playlist(){
+  $(".sec2").on('click','.playlists .element',function(){
+    $(".search").css("opacity", "0.6");
+    $(".search>img").attr("src", "/images/loupe.png");
+    var queryParamValue = $(this).prop('class').replace('element ','');
+    console.log("=>",queryParamValue);
+    $.ajax({
+      url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
+      method: "GET",
+      success: function(data) {
+        currentIndex++;
+        ajaxHistory.splice(currentIndex + 1);
+        ajaxHistory.push(data);
+        $(".sec2").html(data);
+      },
+      error: function(xhr, status, error) {
+        console.error("Error loading content:", error);
+      }
+    });
+  })
+}
 function play(){
   $(".sec2 .results .topSong ").on('click','.element .playpausebtn',function(event){// use 'on' to implement event delegation 
     // console.log($(this).prop('class'));
@@ -332,3 +334,14 @@ function play1(){
     };
   })
 }
+
+function goBackwards() {
+  if (currentIndex > 0) {// accessing the second last element of the "ajaxHistory" which will be the second last content fetched by AJAX request
+    currentIndex--;
+    $(".sec2").html(ajaxHistory[currentIndex]);
+}}
+function goForwards(){// accessing the just next index element from currentIndex of "ajaxHistory" which will be the next element to the current element on which we are currently on by "goBackwards()"
+  if (currentIndex < ajaxHistory.length - 1) {
+    currentIndex++;
+    $(".sec2").html(ajaxHistory[currentIndex]);
+}}

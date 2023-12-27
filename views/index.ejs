@@ -76,7 +76,7 @@
             <% for(let i=0;i<playlist.length;i++){
               let name;
               name=playlist[i].replace(/\s/g, '');%>
-              <div class="element <%= playlist_id[i].playlist_id %>"><!--adding name of the playlist as class after removing the blank spaces so that we can easily compare in script while retaining the previous class (element)-->
+              <div class="element <%= playlist_id[i].playlist_id %>" onclick="playlist()"><!--adding name of the playlist as class after removing the blank spaces so that we can easily compare in script while retaining the previous class (element)-->
                 <div class="poster">
                   <img src="<%= poster[i] %>" alt="">
                 </div>

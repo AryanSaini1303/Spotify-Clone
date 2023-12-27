@@ -22,6 +22,7 @@ var playlist = [];
 var poster = [];
 var likedSongsCount = 0;
 var current_username;
+var result3;
 app.use(
   "/public",
   express.static("public", {
@@ -87,7 +88,7 @@ app.get("/", async (req, res) => {
   const result2 = await db.query(`select name from users where user_id=$1`,[current_user]);
   current_username = result2.rows[0].name;
   const response=await db.query(`select distinct playlist_id from user_songs where user_id=$1`,[current_user]);
-  const result3=response.rows;
+  result3=response.rows;
   // console.log(result3);
   // console.log(result1.rows.length);
   // console.log(playlist, poster);
@@ -237,6 +238,18 @@ app.post("/play",async (req,res)=>{
   const result=response.rows;
   // console.log(result);
   res.json(result[0].song_path);
+})
+
+app.get('/home',(req,res)=>{
+  res.render("home", {
+    playlist: playlist,
+    poster: poster,
+    likedSongsCount,
+    current_username,
+    greetings,
+    flag,
+    playlist_id: result3,
+  });
 })
 
 app.listen(port, () => {
