@@ -1,5 +1,5 @@
-var ajaxHistory=[];
-var currentIndex=-1;
+var ajaxHistory = [];
+var currentIndex = -1;
 
 if ($(".greetings").text()) {
   $(".home>img").attr("src", "/images/homeActive.png");
@@ -30,7 +30,10 @@ $(".title>div").click(() => {
     $(".nav .text").css("display", "none");
     $(".add").css("display", "none");
     $(".title>div h4").css("display", "none");
-    $(".wrapper>.Dynamic-Content").css("grid-template-columns", "0.1fr 3fr 1.2fr");
+    $(".wrapper>.Dynamic-Content").css(
+      "grid-template-columns",
+      "0.1fr 3fr 1.2fr"
+    );
     $(".library .title").css("padding", "1.2rem 0");
     $(".sec1 .element .info").css("display", "none");
     $(".nav>*").css("padding", "0 1.7rem");
@@ -39,12 +42,15 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
-    $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding", "0");
   } else {
     $(".nav .text").css("display", "block");
     $(".add").css("display", "block");
     $(".title>div h4").css("display", "block");
-    $(".wrapper>.Dynamic-Content").css("grid-template-columns", "1fr 3fr 1.2fr");
+    $(".wrapper>.Dynamic-Content").css(
+      "grid-template-columns",
+      "1fr 3fr 1.2fr"
+    );
     $(".library .title").css("padding", "0 1.4rem");
     $(".sec1 .element .info").css("display", "block");
     $(".nav>*").css("padding", "0 1rem");
@@ -53,16 +59,16 @@ $(".title>div").click(() => {
     $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr");
     $(".sec2 #searchInput").css("padding", "10px");
     $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr");
-    $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding", "0");
   }
   count++;
 });
-$(".sec2").on('mouseenter','.playlists .element',function () {
+$(".sec2").on("mouseenter", ".playlists .element", function () {
   // console.log($(this).prop('class'));//gives the class of the current hovering element
   let className = $(this).prop("class").replace("element ", "");
-    $(`.${className} .playpausebtn`).css("opacity", "1");
+  $(`.${className} .playpausebtn`).css("opacity", "1");
 });
-$(".sec2").on('mouseleave','.playlists .element',function () {
+$(".sec2").on("mouseleave", ".playlists .element", function () {
   // console.log($(this).prop('class'));//gives the class of the current hovering element
   let className = $(this).prop("class").replace("element ", "");
   $(`.${className} .playpausebtn`).css("opacity", "0");
@@ -111,7 +117,7 @@ function search() {
             <div class="otherSongs"></div>
           `);
         } else {
-          let id=info[i].song_id
+          let id = info[i].song_id;
           // console.log(name);
           $(".sec2 .results .otherSongs").append(`
               <div class="element ${id}" onclick="play1()">
@@ -174,7 +180,10 @@ if ($(".flag").text() == "true") {
   $(".nav .text").css("display", "none");
   $(".add").css("display", "none");
   $(".title>div h4").css("display", "none");
-  $(".wrapper>.Dynamic-Content").css("grid-template-columns", "0.1fr 3fr 1.2fr");
+  $(".wrapper>.Dynamic-Content").css(
+    "grid-template-columns",
+    "0.1fr 3fr 1.2fr"
+  );
   $(".library .title").css("padding", "1.2rem 0");
   $(".sec1 .element .info").css("display", "none");
   $(".nav>*").css("padding", "0 1.7rem");
@@ -183,105 +192,147 @@ if ($(".flag").text() == "true") {
   $(".sec2 .playlists").css("grid-template-columns", "1fr 1fr 1fr");
   $(".sec2 #searchInput").css("padding", "10px");
   $(".sec2 .results .otherSongs").css("grid-template-columns", "1fr 1fr 1fr");
-  $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding","0");
+  $(".sec2 .mainScreen .songSection .nav .playpausebtn").css("padding", "0");
   count++;
 }
-function playSongs(){
+function playSongs() {
   // we created a function as this function is used by a div which is a part of "sec2" which is dynamically fetched and replaced by AJAX request which essentially detaches the event handlers from their containers/divs for example playSongs function from ".element"
   // Use event delegation to handle clicks on dynamically added elements
   // here we specify the parent container i.e. "songs" and the attach event handler to descendants i.e. "element"
-$(".mainScreen .songSection .songs").on('click', '.element', function (event) {
-  event.preventDefault();
-  let song_id = $(this).prop('class').replace('element ', '');
-  console.log(song_id);
-  var dataToSend = { variableName: song_id };
-  var xhr = new XMLHttpRequest();
-  xhr.open('post', '/play', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  var jsonData = JSON.stringify(dataToSend);
-  xhr.send(jsonData);
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-      if (xhr.status === 200) {
-        try {
-          // Parse the response text as JSON
-          const response = JSON.parse(xhr.responseText);
-          $(".sec4>audio").attr('src', response + ".mp3");
-          const audioElement = $(".sec4>audio")[0];
-          audioElement.play();
-        } catch (error) {
-          console.error('Error parsing JSON response:', error);
+  $(".mainScreen .songSection .songs").on(
+    "click",
+    ".element",
+    function (event) {
+      event.preventDefault();
+      let song_id = $(this).prop("class").replace("element ", "");
+      console.log(song_id);
+      var dataToSend = { variableName: song_id };
+      var xhr = new XMLHttpRequest();
+      xhr.open("post", "/play", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      var jsonData = JSON.stringify(dataToSend);
+      xhr.send(jsonData);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            try {
+              // Parse the response text as JSON
+              const response = JSON.parse(xhr.responseText);
+              $(".sec4>audio").attr("src", response + ".mp3");
+              const audioElement = $(".sec4>audio")[0];
+              audioElement.play();
+            } catch (error) {
+              console.error("Error parsing JSON response:", error);
+            }
+          } else {
+            console.error("Request failed with status:", xhr.status);
+          }
         }
-      } else {
-        console.error('Request failed with status:', xhr.status);
-      }
+      };
     }
-  };
-});
+  );
 }
-$(".sec1 .nav .search").click(()=>{
-  $.ajax({// ajax is used to fetch the data from the server and replace that data into specifc containers of the ejs file
-    url: '/getSearch', // Replace with your server route
-    method: 'GET',
-    success: function(data) {
+$(".sec1 .nav .search").click(() => {
+  $.ajax({
+    // ajax is used to fetch the data from the server and replace that data into specifc containers of the ejs file
+    url: "/getSearch", // Replace with your server route
+    method: "GET",
+    success: function (data) {
       currentIndex++;
       ajaxHistory.splice(currentIndex + 1);
       ajaxHistory.push(data);
       // Replace the content in the dynamicContent div
-      $('.sec2').html(data);
-    }
+      $(".sec2").html(data);
+    },
   });
-})
-$(".sec1 .library .list .element").click(function(){
+});
+$(".sec1 .library .list .element").click(function () {
   $(".search").css("opacity", "0.6");
   $(".search>img").attr("src", "/images/loupe.png");
-  var queryParamValue = $(this).prop('class').replace('element ','');
+  var queryParamValue = $(this).prop("class").replace("element ", "");
   // console.log("=>",queryParamValue);
   $.ajax({
     url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
     method: "GET",
-    success: function(data) {
+    success: function (data) {
       currentIndex++;
       ajaxHistory.splice(currentIndex + 1);
       ajaxHistory.push(data);
       $(".sec2").html(data);
     },
-    error: function(xhr, status, error) {
+    error: function (xhr, status, error) {
       console.error("Error loading content:", error);
-    }
+    },
   });
-})
-function playlist(){
-  $(".sec2").on('click','.playlists .element',function(){
+});
+function playlist() {
+  $(".sec2").on("click", ".playlists .element", function () {
     $(".search").css("opacity", "0.6");
     $(".search>img").attr("src", "/images/loupe.png");
-    var queryParamValue = $(this).prop('class').replace('element ','');
-    console.log("=>",queryParamValue);
+    var queryParamValue = $(this).prop("class").replace("element ", "");
+    console.log("=>", queryParamValue);
     $.ajax({
       url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
       method: "GET",
-      success: function(data) {
+      success: function (data) {
         currentIndex++;
         ajaxHistory.splice(currentIndex + 1);
         ajaxHistory.push(data);
         $(".sec2").html(data);
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         console.error("Error loading content:", error);
-      }
+      },
     });
-  })
+  });
 }
-function play(){
-  $(".sec2 .results .topSong ").on('click','.element .playpausebtn',function(event){// use 'on' to implement event delegation 
+function play() {
+  $(".sec2 .results .topSong ").on(
+    "click",
+    ".element .playpausebtn",
+    function (event) {
+      // use 'on' to implement event delegation
+      // console.log($(this).prop('class'));
+      event.preventDefault();
+      let song_id = $(this).prop("class").replace("playpausebtn ", "");
+      console.log(song_id);
+      var dataToSend = { variableName: song_id };
+      var xhr = new XMLHttpRequest();
+      xhr.open("post", "/play", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      var jsonData = JSON.stringify(dataToSend);
+      xhr.send(jsonData);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            try {
+              // Parse the response text as JSON
+              const response = JSON.parse(xhr.responseText);
+              $(".sec4>audio").attr("src", response + ".mp3");
+              const audioElement = $(".sec4>audio")[0];
+              audioElement.play();
+            } catch (error) {
+              console.error("Error parsing JSON response:", error);
+            }
+          } else {
+            console.error("Request failed with status:", xhr.status);
+          }
+        }
+      };
+    }
+  );
+}
+function play1() {
+  $(".sec2 .results .otherSongs ").on("click", ".element", function (event) {
+    // use 'on' to implement event delegation
     // console.log($(this).prop('class'));
     event.preventDefault();
-    let song_id = $(this).prop('class').replace('playpausebtn ', '');
+    let song_id = $(this).prop("class").replace("element ", "");
     console.log(song_id);
     var dataToSend = { variableName: song_id };
     var xhr = new XMLHttpRequest();
-    xhr.open('post', '/play', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.open("post", "/play", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
     var jsonData = JSON.stringify(dataToSend);
     xhr.send(jsonData);
     xhr.onreadystatechange = function () {
@@ -290,58 +341,37 @@ function play(){
           try {
             // Parse the response text as JSON
             const response = JSON.parse(xhr.responseText);
-            $(".sec4>audio").attr('src', response + ".mp3");
+            $(".sec4>audio").attr("src", response + ".mp3");
             const audioElement = $(".sec4>audio")[0];
             audioElement.play();
           } catch (error) {
-            console.error('Error parsing JSON response:', error);
+            console.error("Error parsing JSON response:", error);
           }
         } else {
-          console.error('Request failed with status:', xhr.status);
+          console.error("Request failed with status:", xhr.status);
         }
       }
     };
-  })
-}
-function play1(){
-  $(".sec2 .results .otherSongs ").on('click','.element',function(event){// use 'on' to implement event delegation 
-    // console.log($(this).prop('class'));
-    event.preventDefault();
-    let song_id = $(this).prop('class').replace('element ', '');
-    console.log(song_id);
-    var dataToSend = { variableName: song_id };
-    var xhr = new XMLHttpRequest();
-    xhr.open('post', '/play', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    var jsonData = JSON.stringify(dataToSend);
-    xhr.send(jsonData);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200) {
-          try {
-            // Parse the response text as JSON
-            const response = JSON.parse(xhr.responseText);
-            $(".sec4>audio").attr('src', response + ".mp3");
-            const audioElement = $(".sec4>audio")[0];
-            audioElement.play();
-          } catch (error) {
-            console.error('Error parsing JSON response:', error);
-          }
-        } else {
-          console.error('Request failed with status:', xhr.status);
-        }
-      }
-    };
-  })
+  });
 }
 
 function goBackwards() {
-  if (currentIndex > 0) {// accessing the second last element of the "ajaxHistory" which will be the second last content fetched by AJAX request
+  if (currentIndex > 0) {
+    // accessing the second last element of the "ajaxHistory" which will be the second last content fetched by AJAX request
     currentIndex--;
     $(".sec2").html(ajaxHistory[currentIndex]);
-}}
-function goForwards(){// accessing the just next index element from currentIndex of "ajaxHistory" which will be the next element to the current element on which we are currently on by "goBackwards()"
+  }
+  else{
+    $(".sec2 .nav .forbackbtn .backward").css("cursor","not-allowed");
+  }
+}
+function goForwards() {
+  // accessing the just next index element from currentIndex of "ajaxHistory" which will be the next element to the current element on which we are currently on by "goBackwards()"
   if (currentIndex < ajaxHistory.length - 1) {
     currentIndex++;
     $(".sec2").html(ajaxHistory[currentIndex]);
-}}
+  }
+  else if(currentIndex==ajaxHistory.length-1){
+    $(".sec2 .nav .forbackbtn .forward").css("cursor","not-allowed");
+  }
+}
