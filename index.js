@@ -58,12 +58,12 @@ app.get("/", async (req, res) => {
   }
 
   const result = await db.query(
-    `select playlist, song_poster from user_songs where user_id=${current_user}`
+    `select distinct playlist, song_poster from user_songs where user_id=${current_user} ORDER BY playlist desc`// i have no idea why query is picking up items in descending order, so to reverse the order i'm using order by desc
   );
   // console.log(result.rows);
   for (let i = 0; i < result.rows.length; i++) {
-    // console.log(result.rows[i].playlist);
     if (playlist.length == 0) {
+      // console.log(result.rows[i]);
       playlist.push(result.rows[i].playlist);
       poster.push(result.rows[i].song_poster);
     } else {
@@ -93,13 +93,7 @@ app.get("/", async (req, res) => {
   // console.log(result1.rows.length);
   // console.log(playlist, poster);
   likedSongsCount = result1.rows.length;
-  // res.render("index", {
-  //   playlist: playlist,
-  //   poster: poster,
-  //   likedSongsCount,
-  //   current_username,
-  //   greetings,
-  // });
+  // console.log(result3);
   res.render("index", {
     playlist: playlist,
     poster: poster,
@@ -110,6 +104,7 @@ app.get("/", async (req, res) => {
     playlist_id: result3,
   });
 });
+
 app.get("/getSearch", (req, res) => {
   res.render("search", {
     playlist: playlist,
@@ -213,6 +208,7 @@ app.get("/playlist", async (req, res) => {
         result,
         altresult,
         Durations,
+        playlist_id:query,
       });
     })
     .catch((err) => {
@@ -240,18 +236,40 @@ app.post("/play",async (req,res)=>{
   res.json(result[0].song_path);
 })
 
-app.get('/home',(req,res)=>{
-  res.render("home", {
-    playlist: playlist,
-    poster: poster,
-    likedSongsCount,
-    current_username,
-    greetings,
-    flag,
-    playlist_id: result3,
-  });
-})
+// app.get('/home',(req,res)=>{
+//   res.render("home", {
+//     playlist: playlist,
+//     poster: poster,
+//     likedSongsCount,
+//     current_username,
+//     greetings,
+//     flag,
+//     playlist_id: result3,
+//   });
+// })
 
+app.post('/playPlaylist',async(req,res)=>{
+  const query=req.body.variableName;
+  // console.log(query);
+  let song_paths=[];
+  if(query!='LikedSongs'){
+    const response=await db.query('select song_path from user_songs where playlist_id=$1',[query]);
+    const result=response.rows;
+    result.forEach((element=>{
+      song_paths.push(element.song_path);
+    }))
+  }
+  else{
+    const altresponse=await db.query('select song_path from user_songs where liked=1');
+    const altresult=altresponse.rows;
+    // console.log(altresult);
+    altresult.forEach((element=>{
+      song_paths.push(element.song_path);
+    }))
+  }
+  // console.log(song_paths);
+  res.json(song_paths);
+})
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

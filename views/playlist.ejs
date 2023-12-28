@@ -31,7 +31,7 @@
             </div>
             <div class="songSection">
               <div class="nav">
-                <div class="playpausebtn">
+                <div class="playpausebtn <%= playlist_id %>" onclick="playPlaylist()">
                   <img src="/images/play-button.png" alt="">
                 </div>
                 <div class="shuffle">
@@ -76,3 +76,12 @@
               </div>
             </div>
           </div>
+          <script>
+            var playFlagValue = $(".playFlag").text().trim().toLowerCase();
+            if (playFlagValue == "true") {
+              $(`.sec2 .mainScreen .songSection .nav .${current_playlist_id}>img`).attr('src','/images/pause-button.png');
+              $(`.sec2 .mainScreen .songSection .nav .${current_playlist_id}>img`).css('margin-left','0');
+            }
+            $(`.sec2 .mainScreen .songSection .nav .${id}>img`).attr('src','/images/pause-button.png');
+            $(`.sec2 .mainScreen .songSection .nav .${id}>img`).css('margin-left','0');
+          </script>

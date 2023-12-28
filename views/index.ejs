@@ -83,12 +83,14 @@
                 <div class="info">
                   <h4 class="name playlistName"><%= playlist[i] %></h4>
                 </div>
-                <div class="playpausebtn"><img src="/images/play-button.png" alt=""></div>
+                <div class="playpausebtn <%= playlist_id[i].playlist_id %>" onclick="playPlaylistFromMainScreen()"><img src="/images/play-button.png" alt=""></div>
               </div>
             <% } %>
           </div>
         </div>
         <div class="flag" style="display:none"><%= flag %></div>
+        <div class="playFlag" style="display:none"></div>
+        <div class="playlist_id" style="display:none"></div>
         <div class="sec sec3"></div>
       </div>
       <div class="sec sec4">

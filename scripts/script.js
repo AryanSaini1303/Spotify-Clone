@@ -1,5 +1,7 @@
 var ajaxHistory = [];
 var currentIndex = -1;
+var current_playlist_id;
+var id;
 
 if ($(".greetings").text()) {
   $(".home>img").attr("src", "/images/homeActive.png");
@@ -169,7 +171,7 @@ $(".sec1 .title div").click(() => {
   xhr.setRequestHeader("Content-Type", "application/json");
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4 && xhr.status === 200) {
-      console.log(xhr.responseText);
+      // console.log(xhr.responseText);
     }
   };
   var data = JSON.stringify({ variable: variableValue });
@@ -205,7 +207,7 @@ function playSongs() {
     function (event) {
       event.preventDefault();
       let song_id = $(this).prop("class").replace("element ", "");
-      console.log(song_id);
+      // console.log(song_id);
       var dataToSend = { variableName: song_id };
       var xhr = new XMLHttpRequest();
       xhr.open("post", "/play", true);
@@ -270,7 +272,7 @@ function playlist() {
     $(".search").css("opacity", "0.6");
     $(".search>img").attr("src", "/images/loupe.png");
     var queryParamValue = $(this).prop("class").replace("element ", "");
-    console.log("=>", queryParamValue);
+    // console.log("=>", queryParamValue);
     $.ajax({
       url: "/playlist?queryParam=" + encodeURIComponent(queryParamValue),
       method: "GET",
@@ -295,7 +297,7 @@ function play() {
       // console.log($(this).prop('class'));
       event.preventDefault();
       let song_id = $(this).prop("class").replace("playpausebtn ", "");
-      console.log(song_id);
+      // console.log(song_id);
       var dataToSend = { variableName: song_id };
       var xhr = new XMLHttpRequest();
       xhr.open("post", "/play", true);
@@ -328,7 +330,7 @@ function play1() {
     // console.log($(this).prop('class'));
     event.preventDefault();
     let song_id = $(this).prop("class").replace("element ", "");
-    console.log(song_id);
+    // console.log(song_id);
     var dataToSend = { variableName: song_id };
     var xhr = new XMLHttpRequest();
     xhr.open("post", "/play", true);
@@ -374,4 +376,114 @@ function goForwards() {
   else if(currentIndex==ajaxHistory.length-1){
     $(".sec2 .nav .forbackbtn .forward").css("cursor","not-allowed");
   }
+}
+function playPlaylist(){
+  const audioElement = $(".sec4>audio")[0];
+  $(audioElement).on('pause',function(){
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").attr('src','/images/play-button.png');
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").css('margin-left','0.2rem');
+  })
+  $(audioElement).on('play',function(){
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").attr('src','/images/pause-button.png');
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").css('margin-left','0');
+  })
+  $(".sec2 .mainScreen .songSection .nav").on('click','.playpausebtn',function(){// here we used event delegation to neglect the reassigning of click event to the playpausebtn multiple times which resutls in the abnormal behaviour such as multiple clicks to activate click event, we created a function here as the content with the playpausebtn is dynamically fetched by AJAX requets and replaced in .sec2 which deatches any event handler so we use funtion to prevent all this by adding an onclick attribute to the playpausebtn where we specify this function to be activated when clicked
+    current_playlist_id=$(this).prop('class').replace('playpausebtn ','');
+    $(".playlist_id").text(current_playlist_id);
+    id=$(".playlist_id").text();
+    // console.log(current_playlist_id);
+    $(".playlist_id").text(current_playlist_id);
+    var dataToSend = { variableName: current_playlist_id };
+    var xhr = new XMLHttpRequest();
+    xhr.open("post", "/playPlaylist", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    var jsonData = JSON.stringify(dataToSend);
+    xhr.send(jsonData);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText);            
+            // Set up an index to keep track of the current song
+            let currentSongIndex = 0;    
+            // Function to play the current song
+            function playCurrentSong() {
+              audioElement.src = response[currentSongIndex] + ".mp3";
+              audioElement.play();
+            }    
+            // Play the first song
+            playCurrentSong();    
+            // Add 'ended' event listener to play the next song
+            $(".sec4>audio").on('ended', () => {
+              currentSongIndex++;    
+              // Check if there are more songs in the array
+              if (currentSongIndex < response.length) {
+                // Play the next song
+                playCurrentSong();
+              }
+            });    
+          } catch (error) {
+            console.error("Error parsing JSON response:", error);
+          }
+        } else {
+          console.error("Request failed with status:", xhr.status);
+        }
+      }
+    };
+  })
+}
+function playPlaylistFromMainScreen(){
+  const audioElement = $(".sec4>audio")[0];
+  /**************************************************************************** */
+  $(".playFlag").text("true");
+  /**************************************************************************** */
+  $(audioElement).on('pause',function(){
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").attr('src','/images/play-button.png');
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").css('margin-left','0.2rem');
+  })
+  $(audioElement).on('play',function(){
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").attr('src','/images/pause-button.png');
+    $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").css('margin-left','0');
+  })
+  $(".sec2 .playlists .element").on('click','.playpausebtn',function(){
+    current_playlist_id=$(this).prop('class').replace('playpausebtn ','');// this keyword particularly selects the currently selected "playpausebtn"
+    // console.log(current_playlist_id);
+    var dataToSend = { variableName: current_playlist_id };
+    var xhr = new XMLHttpRequest();
+    xhr.open("post", "/playPlaylist", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    var jsonData = JSON.stringify(dataToSend);
+    xhr.send(jsonData);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          try {
+            const response = JSON.parse(xhr.responseText);          
+            // Set up an index to keep track of the current song
+            let currentSongIndex = 0;    
+            // Function to play the current song
+            function playCurrentSong() {
+              audioElement.src = response[currentSongIndex] + ".mp3";
+              audioElement.play();
+            }    
+            // Play the first song
+            playCurrentSong();
+            // Add 'ended' event listener to play the next song
+            $(".sec4>audio").on('ended', () => {
+              currentSongIndex++;    
+              // Check if there are more songs in the array
+              if (currentSongIndex < response.length) {
+                // Play the next song
+                playCurrentSong();
+              }
+            });    
+          } catch (error) {
+            console.error("Error parsing JSON response:", error);
+          }
+        } else {
+          console.error("Request failed with status:", xhr.status);
+        }
+      }
+    };
+  })
 }
