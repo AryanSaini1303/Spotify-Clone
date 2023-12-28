@@ -10,8 +10,8 @@ if ($(".greetings").text()) {
   $(".search>img").attr("src", "/images/loupe.png");
 } else if ($(".topResults").text()) {
   $(".home").css("opacity", "0.6");
-  $(".search").css("opacity", "1");
   $(".home>img").attr("src", "/images/home.png");
+  $(".search").css("opacity", "1");
   $(".search>img").attr("src", "/images/loupeActive.png");
 }
 $(".home").click(() => {
@@ -251,6 +251,8 @@ $(".sec1 .nav .search").click(() => {
 $(".sec1 .library .list .element").click(function () {
   $(".search").css("opacity", "0.6");
   $(".search>img").attr("src", "/images/loupe.png");
+  $(".home").css("opacity", "0.6");
+  $(".home>img").attr("src", "/images/home.png");
   var queryParamValue = $(this).prop("class").replace("element ", "");
   // console.log("=>",queryParamValue);
   $.ajax({
@@ -271,6 +273,8 @@ function playlist() {
   $(".sec2").on("click", ".playlists .element", function () {
     $(".search").css("opacity", "0.6");
     $(".search>img").attr("src", "/images/loupe.png");
+    $(".home").css("opacity", "0.6");
+    $(".home>img").attr("src", "/images/home.png");
     var queryParamValue = $(this).prop("class").replace("element ", "");
     // console.log("=>", queryParamValue);
     $.ajax({
@@ -434,9 +438,9 @@ function playPlaylist(){
 }
 function playPlaylistFromMainScreen(){
   const audioElement = $(".sec4>audio")[0];
-  /**************************************************************************** */
   $(".playFlag").text("true");
-  /**************************************************************************** */
+  $(".home").css("opacity", "0.6");
+  $(".home>img").attr("src", "/images/home.png");
   $(audioElement).on('pause',function(){
     $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").attr('src','/images/play-button.png');
     $(".sec2 .mainScreen .songSection .nav .playpausebtn>img").css('margin-left','0.2rem');
